@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>γ-FedHT</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <meta property="og:image" content="https://shuzhaoxie.github.io/mesongs/img/nottingham.jpg">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1296">
+    <meta property="og:image:height" content="840">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://shuzhaoxie.github.io/mesongs/">
+    <meta property="og:title" content="MesonGS: Post-training Compression of 3D Gaussians via Efficient Attribute Transformation">
+    <meta property="og:description" content="3D Gaussian Splatting demonstrates excellent quality and speed in novel view synthesis. Nevertheless, the significant size of the 3D Gaussians presents challenges for transmission and storage. Current approaches employ compact models to compress the substantial volume and attributes of 3D Gaussians, along with intensive training to uphold quality. These endeavors demand considerable finetuning time, presenting formidable hurdles for practical deployment. To this end, we propose MesonGS, a codec for post-training compression of 3D Gaussians. Initially, we introduce a measurement criterion that considers both view-dependent and view-independent factors to assess the impact of each Gaussian point on the rendering output, enabling the removal of insignificant points. Subsequently, we decrease the entropy of attributes through two transformations that complement subsequent entropy coding techniques to enhance the file compression rate. More specifically, we first replace the rotation quaternion with Euler angles; then, we apply region adaptive hierarchical transform (RAHT) to key attributes to reduce entropy. Lastly, we suggest block quantization to control quantization granularity, thereby avoiding excessive information loss caused by quantization. Moreover, a finetune scheme is introduced to restore quality. Extensive experiments demonstrate that MesonGS significantly reduces the size of 3D Gaussians while preserving competitive quality.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MesonGS: Post-training Compression of 3D Gaussians via Efficient Attribute Transformation">
+    <meta name="twitter:description" content="3D Gaussian Splatting demonstrates excellent quality and speed in novel view synthesis. Nevertheless, the significant size of the 3D Gaussians presents challenges for transmission and storage. Current approaches employ compact models to compress the substantial volume and attributes of 3D Gaussians, along with intensive training to uphold quality. These endeavors demand considerable finetuning time, presenting formidable hurdles for practical deployment. To this end, we propose MesonGS, a codec for post-training compression of 3D Gaussians. Initially, we introduce a measurement criterion that considers both view-dependent and view-independent factors to assess the impact of each Gaussian point on the rendering output, enabling the removal of insignificant points. Subsequently, we decrease the entropy of attributes through two transformations that complement subsequent entropy coding techniques to enhance the file compression rate. More specifically, we first replace the rotation quaternion with Euler angles; then, we apply region adaptive hierarchical transform (RAHT) to key attributes to reduce entropy. Lastly, we suggest block quantization to control quantization granularity, thereby avoiding excessive information loss caused by quantization. Moreover, a finetune scheme is introduced to restore quality. Extensive experiments demonstrate that MesonGS significantly reduces the size of 3D Gaussians while preserving competitive quality.">
+    <meta name="twitter:image" content="https://shuzhaoxie.github.io/mesongs/img/teaser.jpg"> -->
+    
+    <!-- <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>"> -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css">
+    <link rel="stylesheet" href="css/app.css">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+    
+    <script src="js/app.js"></script>
+    <script src="js/video_comparison.js"></script>
+
+    <script type="text/javascript">
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+      </script>
+      <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+      </script>
+</head>
+
+<body>
+    <div class="container" id="main">
+        <div class="row">
+            <h2 class="col-md-12 text-center">
+                <b>$\gamma$-FedHT</b>: Stepsize-Aware Hard-Threshold Gradient
+                <br>Compression in Federated Learning<br> 
+                <small>
+                INFOCOM 2025
+                </small>
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <ul class="list-inline">
+                    <li>
+                        <a href="https://rongweilu.cc/">
+                          Rongwei Lu
+                        </a></li>
+                    <li>
+                        Yutong Jiang
+                    </li>
+                    <li>
+                        Jinrui Zhang
+                    </li>
+                    <li>
+                        Chunyang Li
+                    </li>
+                    <li>
+                        Yifei Zhu
+                    </li>
+                    <li>
+                        Bin Chen
+                    </li>
+                    <li>
+                        <a href="http://zwang.inflexionlab.org">
+                          Zhi Wang
+                        </a>
+                    </li>
+                    <br>Tsinghua University, Harbin Institute of Technology, Shanghai Jiao Tong University
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                    <ul class="nav nav-pills nav-justified">
+                        <li>
+                            <a href="data/r_FedHT_INFOCOM2025.pdf">
+                            <img src="img/r_FedHT_paper_image.png" height="40px">
+                                <h4><strong>Paper</strong></h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="data/r_FedHT_INFOCOM2025.pdf">
+                            <img src="img/r_FedHT_paper_image.png" height="40px">
+                                <h4><strong>Supplyment</strong></h4>
+                            </a>
+                        </li>
+                        <!-- <li>
+                            <a href="https://github.com/ShuzhaoXie/MesonGS">
+                            <img src="img/github.png" height="40px">
+                                <h4><strong>Code</strong></h4>
+                            </a>
+                        </li> -->
+                    </ul>
+                </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Abstract
+                </h3>
+                <p class="text-justify">Gradient compression can effectively alleviate communication bottlenecks in Federated Learning (FL). Contemporary state-of-the-art sparse compressors, such as Top-$k$, exhibit high computational complexity, up to $\mathcal{O}(d\log_2{k})$, where d is the number of model parameters. The hard-threshold compressor, which simply transmits elements with absolute values higher than a fixed threshold, is thus proposed to reduce the complexity to $\mathcal{O}(d)$. However, the hard-threshold compression causes accuracy degradation in FL, where the datasets are non-IID and the stepsize $\gamma$ is decreasing for model convergence. The decaying stepsize reduces the updates and causes the compression ratio of the hard-threshold compression to drop rapidly to an aggressive ratio. At or below this ratio, the model accuracy has been observed to degrade severely. To address this, we propose $\gamma$-FedHT, a stepsize-aware low-cost compressor with Error-Feedback to guarantee convergence. Given that the traditional theoretical framework of FL does not consider Error-Feedback, we introduce the fundamental conversation of Error-Feedback. We prove that $\gamma$-FedHT has the convergence rate of $\mathcal{O}(\frac{1}{T})$ ($T$ representing total training iterations) under μ-strongly convex cases and $\mathcal{O}(\frac{1}{\sqrt{T}})$ under non-convex cases, <em>same as FedAVG</em>. Extensive experiments demonstrate that $\gamma$-FedHT improves accuracy by up to 7.42% over Top-$k$ under equal communication traffic on various non-IID image datasets.
+                </p>
+            </div>
+        </div>
+  
+<br>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Method
+                </h3>
+                
+				<table style="width: 100%; border-collapse: collapse;">
+				  <tbody><tr>
+				    <td style="text-align: left;">
+		                <img src="img/r_FedHT_algorithm.png" width="60%">
+					</td>
+				  </tr>
+				</tbody></table>
+                <br>
+                <p class="text-justify">
+                    $\gamma$-FedHT is a stepsize-aware hard-threshold compressor with vanilla EF, avoiding the accelerator-unfriendly operations like Top-$k$ selection, and inheriting the low-cost property. To improve the performance, the threshold should satisfy the increasing and then decreasing monotonicity with a limit of zero. Combining two simple functions, the inverse proportional function and the logarithmic function, the adaptive threshold can satisfy the two mathematical properties without introducing more hyperparameters. Although there have been efforts to theoretically validate gradient compression algorithms in FL, these works have not considered EF, which is important and necessary for sparsification compression. To derive the convergence rate of our design, we solve the problem of <em>how to integrate gradient compression with EF into the theoretical framework of FL</em>. We fuse the mathematical description of EF into the framework and establish an iterative equation. Based on this, we derive the convergence rates. The convergence rates of $\gamma$-FedHT are $\mathcal{O}(\frac{1}{T})$ under μ-strongly convex functions and $\mathcal{O}(\frac{1}{\sqrt{T}})$ under non-convex functions, <em>the same rate as FedAVG without compression</em>.
+                </p>
+            </div>
+        </div>
+<br>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Contribution
+                </h3>
+                <p class="text-justify">
+                    1) We are the first to reveal that the model trained with the hard-threshold compression converges less effectively than the one trained with Top-$k$ compressor by the controlled variable method. We use a full factorial experimental design to demonstrate that it is the combination of the decaying stepsize and non-IID scenarios that contributes to the failure of the hard-threshold compression in FL.
+                <br>2) We propose $\gamma$-FedHT, the first sparsification compressor in FL with a time complexity of $\mathcal{O}(d)$ and the same convergence rate as vanilla FedAVG. We expand the application of the traditional FL theoretical framework and derive the convergence rate of FedAVG with gradient compression and EF, based on introducing the iterative equation of EF.
+                <br>3) We apply $\gamma$-FedHT to both real-world non-IID and artificially partitioned non-IID datasets, including convex cases (<em>e.g.</em> Logistic) and non-convex cases (<em>e.g.</em> VGG, CNN and GPT2). The experimental results validate the great compression-accuracy trade-offs of our design. Under equal traffic communication, $\gamma$-FedHT can improve accuracy by up to 7.42% over Top-$k$ on the CNN model with non-IID datasets.
+                </p>
+            </div>
+        </div>
+<br>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Evaluation Experiments
+                </h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tbody><tr>
+                      <td style="text-align: center;">
+                        <img src="img/r_FedHT_experiment.png" width="100%">
+                      </td>
+                    </tr>
+                  </tbody></table>
+                  <br>
+                  <p class="text-justify">
+                    Accuracy and communication traffic of different gradient compression algorithms under different non-IID partition strategies. The results show that $\gamma$-FedHT outperforms other sparsifiers under both non-convex and convex cases especially when the communication is restricted and the non-IID problem is extremely severe.
+                  </p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Citation
+                </h3>
+                <div class="form-group col-md-10 col-md-offset-1">
+                    <textarea id="bibtex" class="form-control" readonly>
+
+</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Acknowledgements
+                </h3>
+                <p class="text-justify">
+                    We would like to thank  Chen Tang, Mingzhou Wu and Shuzhao Xie for their help in making this work possible.
+                    <br>
+                    This work is supported in part by National Key Research and Development Project of China under Grant 2023YFF0905502, National Natural Science Foundation of China under Grant 62472249 and 92467204 , and Shenzhen Science and Technology Program under Grant JCYJ20220818101014030 and KJZD20240903102300001. The work of Bin Chen is supported by the National Natural Science Foundation of China under Grant 62301189.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+</body></html>

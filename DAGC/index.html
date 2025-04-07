@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html><head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>DAGC</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <meta property="og:image" content="https://shuzhaoxie.github.io/mesongs/img/nottingham.jpg">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1296">
+    <meta property="og:image:height" content="840">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://shuzhaoxie.github.io/mesongs/">
+    <meta property="og:title" content="MesonGS: Post-training Compression of 3D Gaussians via Efficient Attribute Transformation">
+    <meta property="og:description" content="3D Gaussian Splatting demonstrates excellent quality and speed in novel view synthesis. Nevertheless, the significant size of the 3D Gaussians presents challenges for transmission and storage. Current approaches employ compact models to compress the substantial volume and attributes of 3D Gaussians, along with intensive training to uphold quality. These endeavors demand considerable finetuning time, presenting formidable hurdles for practical deployment. To this end, we propose MesonGS, a codec for post-training compression of 3D Gaussians. Initially, we introduce a measurement criterion that considers both view-dependent and view-independent factors to assess the impact of each Gaussian point on the rendering output, enabling the removal of insignificant points. Subsequently, we decrease the entropy of attributes through two transformations that complement subsequent entropy coding techniques to enhance the file compression rate. More specifically, we first replace the rotation quaternion with Euler angles; then, we apply region adaptive hierarchical transform (RAHT) to key attributes to reduce entropy. Lastly, we suggest block quantization to control quantization granularity, thereby avoiding excessive information loss caused by quantization. Moreover, a finetune scheme is introduced to restore quality. Extensive experiments demonstrate that MesonGS significantly reduces the size of 3D Gaussians while preserving competitive quality.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MesonGS: Post-training Compression of 3D Gaussians via Efficient Attribute Transformation">
+    <meta name="twitter:description" content="3D Gaussian Splatting demonstrates excellent quality and speed in novel view synthesis. Nevertheless, the significant size of the 3D Gaussians presents challenges for transmission and storage. Current approaches employ compact models to compress the substantial volume and attributes of 3D Gaussians, along with intensive training to uphold quality. These endeavors demand considerable finetuning time, presenting formidable hurdles for practical deployment. To this end, we propose MesonGS, a codec for post-training compression of 3D Gaussians. Initially, we introduce a measurement criterion that considers both view-dependent and view-independent factors to assess the impact of each Gaussian point on the rendering output, enabling the removal of insignificant points. Subsequently, we decrease the entropy of attributes through two transformations that complement subsequent entropy coding techniques to enhance the file compression rate. More specifically, we first replace the rotation quaternion with Euler angles; then, we apply region adaptive hierarchical transform (RAHT) to key attributes to reduce entropy. Lastly, we suggest block quantization to control quantization granularity, thereby avoiding excessive information loss caused by quantization. Moreover, a finetune scheme is introduced to restore quality. Extensive experiments demonstrate that MesonGS significantly reduces the size of 3D Gaussians while preserving competitive quality.">
+    <meta name="twitter:image" content="https://shuzhaoxie.github.io/mesongs/img/teaser.jpg"> -->
+    
+    <!-- <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>"> -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css">
+    <link rel="stylesheet" href="css/app.css">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+    
+    <script src="js/app.js"></script>
+    <script src="js/video_comparison.js"></script>
+
+    <script type="text/javascript">
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+      </script>
+      <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+      </script>
+</head>
+
+<body>
+    <div class="container" id="main">
+        <div class="row">
+            <h2 class="col-md-12 text-center">
+                <b>DAGC</b>: Data-Aware Gradient Compression for FL in
+                <br> Communication-Constrained Mobile Computing<br> 
+                <small>
+                TMC 2024
+                </small>
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <ul class="list-inline">
+                    <li>
+                        <a href="https://rongweilu.cc/">
+                          Rongwei Lu
+                        </a></li>
+                    <li>
+                        Yutong Jiang
+                    </li>
+                    <li>
+                        Yinan Mao
+                    </li>
+                    <li>
+                        <a href="https://www.chentang.cc">
+                          Chen Tang
+                        </a>
+                    </li>
+                    <li>
+                        Bin Chen
+                    </li>
+                    <li>
+                        Laizhong Cui
+                    </li>
+                    <li>
+                        <a href="http://zwang.inflexionlab.org">
+                          Zhi Wang
+                        </a>
+                    </li>
+                    <br>Tsinghua University, Harbin Institute of Technology, Shenzhen University
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                    <ul class="nav nav-pills nav-justified">
+                        <li>
+                            <a href="data/DAGC_TMC.pdf">
+                            <img src="img/dagc_paper_image.png" height="40px">
+                                <h4><strong>Paper</strong></h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="data/DAGC_TMC.pdf">
+                            <img src="img/dagc_paper_image.png" height="40px">
+                                <h4><strong>Supplyment</strong></h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Jiang-Yutong/DAGC">
+                            <img src="img/github.png" height="40px">
+                                <h4><strong>Code</strong></h4>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Method
+                </h3>
+                
+				<table style="width: 100%; border-collapse: collapse;">
+				  <tbody><tr>
+				    <td style="text-align: center;">
+		                <img src="img/dagc_framework.png" width="100%">
+					</td>
+				  </tr>
+				</tbody></table>
+                <br>
+                <p class="text-justify">
+                    DAGC sets different compression ratios to workers depending on the worker size. Large workers (i.e., the workers with large data volumes and similarly to small and medium workers) are assigned conservative compression ratios, and small workers adopt aggressive compression ratios.
+                </p>
+            </div>
+        </div>
+<br>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Abstract
+                </h3>
+                <p class="text-justify">Federated Learning (FL) in mobile environments faces significant communication bottlenecks. Gradient compression has proven as an effective solution to this issue, offering substantial benefits in environments with limited bandwidth and metered data. Yet, it encounters severe performance drops in non-IID environments due to a one-size-fits-all compression approach, which does not account for the varying data volumes across workers. Assigning varying compression ratios to workers with distinct data distributions and volumes is therefore a promising solution. This work derives the convergence rate of distributed SGD with non-uniform compression, which reveals the intricate relationship between model convergence and the compression ratios applied to individual workers. Accordingly, we frame the relative compression ratio assignment as an $n$-variable chi-squared nonlinear optimization problem, constrained by a limited communication budget. We propose DAGC-R, which assigns conservative compression to workers handling larger data volumes. Recognizing the computational limitations of mobile devices, we propose the DAGC-A, which is computationally less demanding and enhances the robustness of compression in non-IID scenarios. Our experiments confirm that the DAGC-R and DAGC-A can speed up the training speed by up to 25.43% and 16.65%  compared to the uniform compression respectively, when dealing with highly imbalanced data volume distribution and restricted communication.
+                </p>
+            </div>
+        </div>  
+<br>
+
+        <!-- <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Contribution
+                </h3>
+                <p class="text-justify">
+                    1) We experimentally reveal that setting higher compression ratios for large workers converges faster than the uniform compression under the fixed and limited communication volume.
+                <br>2) We generalize the convergence analysis of D-EF-SGD with both relative and absolute compressors to the context of non-uniform compression, where nodes are endowed with different compression ratios and training weights. Under communication-constrained non-IID scenarios, we show the key factor $\frac{\sum_{i=1}^n\frac{p_i}{\sqrt{\delta_i}}}{\sqrt{\delta_{min}}}$ for the relative compressor and $\sum_{i=1}^n p_i^2 \lambda_i^2$ for the absolute compressor.
+                <br>3) We propose two novel adaptive compression algorithms, DAGC-R and DAGC-A, designed for optimizing compression rate allocation in relative and absolute compressors, respectively. DAGC-R is developed by solving an $n$-variable chi-square nonlinear asymmetric optimization problem with a communication constraint. In DAGC-R, it has $\frac{\delta_i}{\delta_j}\approx(\frac{p_i}{p_j})^{2/3}$. Similarly, DAGC-A is developed by solving an $n$-variable chi-square nonlinear symmetrical optimization problem subject to the same constraint and has $\frac{\lambda_i}{\lambda_j}=(\frac{p_j}{p_i})^{2/3}$. DAGC-R and DAGC-A converge the fastest in communication-constrained non-IID scenarios.
+                <br>4) We employ DAGC-R and DAGC-A in both the real-world non-IID and artificially partitioned non-IID datasets. The experimental results confirm the correctness of our theory and show that our design can save up to 25.43% of iterations to converge to the same accuracy compared to the uniform compression.
+                </p>
+            </div>
+        </div>
+<br> -->
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Motivation
+                </h3>
+                
+				<table style="width: 100%; border-collapse: collapse;">
+				  <tbody><tr>
+				    <td style="text-align: center;">
+		                <img src="img/dagc_motivation.png" width="100%">
+					</td>
+				  </tr>
+				</tbody></table>
+                <br>
+                <p class="text-justify">
+                    We validate the following two points through a series of motivating experiments:
+                <br>1) In communication-constrained environments, a compression strategy with different compression ratios can achieve faster convergence compared to uniform compression.
+                <br>2) A strategy that sets higher compression ratios for <em>large workers</em> usually achieves faster convergence than those for <em>small workers</em> reducing the number of iterations by up to 69.70%.
+                </p>
+            </div>
+        </div>
+<br>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Theoretical Analysis
+                </h3>
+                <p class="text-justify">
+                    Convergence rate in convex scenarios: $$\mathcal{O} \left( \frac{\sigma^2}{\epsilon} + \frac{\zeta \Phi}{\sqrt{\epsilon}} + \Phi \right)$$
+                <br>Convergence rate in non-convex scenarios: $$\mathcal{O} \left( \frac{\sigma^2}{\epsilon^2} + \frac{\zeta \Phi}{\epsilon^{3/2}} + \frac{\Phi}{\epsilon} \right)$$
+                <br>Identify the key factor $\Phi$: $$\frac{\sum\limits_{i=1}^{n} \frac{p_i}{\sqrt{\delta_i}}}{\sqrt{\delta_{\min}}}$$
+                <br>$p_i$: the data volume of the $i$-th node
+                <br>$\delta_i$: the compression ratio of $i$-th node
+                <br>$n$: the number of nodes
+                </p>
+            </div>
+        </div>
+<br>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Evaluation Experiments
+                </h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tbody><tr>
+                      <td style="text-align: center;">
+                          <img src="img/dagc_experiment1.png" width="100%">
+                      </td>
+                    </tr>
+                  </tbody></table>
+                  <br>
+                  <p class="text-justify">
+                    DAGC saves up to 25% iterations in communication-constrained non-IID scenarios.
+                  </p>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tbody><tr>
+                      <td style="text-align: center;">
+                          <img src="img/dagc_experiment2.png" width="100%">
+                      </td>
+                    </tr>
+                  </tbody></table>
+                  <br>
+                  <p class="text-justify">
+                    Even under $n=200$, DAGC still shows better performance than other algorithms, which indicates the scalability of DAGC.
+                  </p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Citation
+                </h3>
+                <div class="form-group col-md-10 col-md-offset-1">
+                    <textarea id="bibtex" class="form-control" readonly>
+@article{lu2024data,
+title={Data-Aware Gradient Compression for FL in Communication-Constrained Mobile Computing},
+author={Lu, Rongwei and Jiang, Yutong and Mao, Yinan and Tang, Chen and Chen, Bin and Cui, Laizhong and Wang, Zhi},
+journal={IEEE Transactions on Mobile Computing},
+year={2024},
+publisher={IEEE}
+}
+</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Acknowledgements
+                </h3>
+                <p class="text-justify">
+                    This work is supported in part by National Key Research and Development Project of China under Grant 2023YFF0905502, National Natural Science Foundation of China under Grant 62472249, and Shenzhen Science and Technology Program under Grant JCYJ20220818101014030. The work of Bin Chen is supported by the National Natural Science Foundation of China under Grant 62301189.
+                    <br>
+                    We thank Duo Wu, Chunyang Li, Jingyan Jiang, Haotian Dong, Jiajun Luo, Xiaoxin Su and Yifei Zhu for their help.
+                </p>
+            </div>
+        </div> -->
+    </div>
+
+
+</body></html>
